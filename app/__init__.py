@@ -33,8 +33,13 @@ def searchUser():
     request_params = request.get_json()
 
     service = UserService()
-    users = service.search_users(request_params)
+    users = service.search_users(request_params.get("filters"))
 
+    if request_params.get("sort_by") == "popular":
+        return sorted(users, key=lambda x: x[-1], reverse=True)
+    elif request_params.get("sort_by") == "least_popular":
+        return sorted(users, key=lambda x: x[-1])
+    
     return users
 
 @app.route('/users/most_popular', methods=['GET'])
