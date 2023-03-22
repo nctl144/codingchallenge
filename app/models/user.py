@@ -1,7 +1,7 @@
 import json
 
 class User:
-    FILTER_ATTRS = ["id", "first_name", "last_name", "sex", "rating_gte", "rating_lte", "birth_date", "primary_skills", "secondary_skills", "company", "active", "country", "language"]
+    FILTER_ATTRS = ["id", "first_name", "last_name", "sex", "rating_gte", "rating_lte", "birth_date", "primary_skills", "secondary_skill", "company", "active", "country", "language"]
     
     def __init__(self, data=None):
         self.id = data.get("id")

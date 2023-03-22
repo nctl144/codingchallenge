@@ -88,6 +88,8 @@ class UserDao(BaseDao):
         WHERE {where_statement}
         """
 
+        print(sql)
+
         return self.cursor.execute(sql, params).fetchall()
         
     def build_statement_parts(self, filters):
@@ -102,6 +104,10 @@ class UserDao(BaseDao):
             elif attr == "rating_lte":
                 where_statement_parts.append("rating <= (?)")
                 params.append(filters.get("rating_lte"))
+            elif attr in ("primary_skills", "secondary_skill"):
+                for skill in filters.get(attr):
+                    where_statement_parts.append(f"{attr} LIKE '%' || (?) || '%'")
+                    params.append(skill)
             else:
                 where_statement_parts.append(f"{attr} = (?)")
                 params.append(filters.get(attr))

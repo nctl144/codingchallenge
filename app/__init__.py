@@ -24,7 +24,7 @@ def postUsers():
 @app.route('/users/<id>', methods=['GET'])
 def getUser(id):
     service = UserService()
-    user = service.retrieve_user_with_id(int(id))
+    user = service.retrieve_user_with_id(id)
 
     return [user]
 
