@@ -70,3 +70,60 @@ class UserDao(BaseDao):
 
         return self.cursor.execute(sql).fetchone()
         
+    def search_users(self, filters):
+        where_statement, params = self.build_statement_parts(filters)
+        
+        sql = f"""
+        SELECT 
+            id,
+            first_name,
+            last_name,
+            sex,
+            birth_date,
+            rating,
+            primary_skills,
+            secondary_skill,
+            company,
+            active,
+            country,
+            language,
+            search_count
+        FROM tblUsers
+        WHERE {where_statement}
+        """
+
+        return self.cursor.execute(sql, params).fetchall()
+        
+    def build_statement_parts(self, filters):
+        params = []
+        where_statement = ""
+        where_statement_parts = []
+    
+        for attr in filters.keys():
+            if attr == "rating_gte":
+                where_statement_parts.append("rating >= (?)")
+                params.append(filters.get("rating_gte"))
+            elif attr == "rating_lte":
+                where_statement_parts.append("rating <= (?)")
+                params.append(filters.get("rating_lte"))
+            else:
+                where_statement_parts.append(f"{attr} = (?)")
+                params.append(filters.get(attr))
+        
+        if len(where_statement_parts) > 1:
+            where_statement += " AND ".join(where_statement_parts)
+        else:
+            where_statement += "".join(where_statement_parts)
+        
+        return where_statement, params
+    
+    def update_searched_user_count(self, users):
+        user_ids = [tuple([user[0]]) for user in users]
+
+        sql = """
+        UPDATE tblUsers
+        SET search_count = search_count + 1
+        WHERE id = (?)
+        """
+        self.cursor.executemany(sql, user_ids)
+        self.conn.commit()
