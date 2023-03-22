@@ -5,7 +5,20 @@ class UserDao(BaseDao):
         super().__init__()
 
     
-    def insert_user(self, user):
+    def insert_users(self, users):
+        params = [(user.id, 
+                    user.first_name, 
+                    user.last_name, 
+                    user.sex, 
+                    user.birth_date, 
+                    user.rating, 
+                    user.primary_skills, 
+                    user.secondary_skills, 
+                    user.company, 
+                    user.active, 
+                    user.country, 
+                    user.language,
+                    0) for user in users]
         sql = """
         INSERT INTO tblUsers (
             id,
@@ -26,24 +39,7 @@ class UserDao(BaseDao):
         )
         """
         try:
-            self.cursor.execute(
-                sql, 
-                (
-                    user.id, 
-                    user.first_name, 
-                    user.last_name, 
-                    user.sex, 
-                    user.birth_date, 
-                    user.rating, 
-                    user.primary_skills, 
-                    user.secondary_skills, 
-                    user.company, 
-                    user.active, 
-                    user.country, 
-                    user.language,
-                    0
-                )
-            )
+            self.cursor.executemany(sql, params)
             self.conn.commit()
         except Exception as e: 
             raise Exception("Failed to insert user, check request", e)

@@ -7,10 +7,8 @@ class UserService:
         self.user_dao = UserDao()
 
     def insert_users(self, data):
-        for user_data in data:
-            user = User(user_data)
-
-            self.user_dao.insert_user(user)
+        users = [User(user_data) for user_data in data]
+        self.user_dao.insert_users(users)
 
     def retrieve_user_with_id(self, id):
         return self.user_dao.retrieve_user_with_id(id)

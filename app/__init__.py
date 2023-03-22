@@ -36,3 +36,12 @@ def searchUser():
     users = service.search_users(request_params)
 
     return users
+
+@app.route('/users/most_popular', methods=['GET'])
+def getMostPopular():
+    pass
+
+
+@app.route('/users/least_popular', methods=['GET'])
+def getLeastPopular():
+    pass
