@@ -123,3 +123,46 @@ class UserDao(BaseDao):
         """
         self.cursor.executemany(sql, user_ids)
         self.conn.commit()
+
+    def get_most_popular_users(self):
+        sql = """
+        SELECT 
+            id,
+            first_name,
+            last_name,
+            sex,
+            birth_date,
+            rating,
+            primary_skills,
+            secondary_skill,
+            company,
+            active,
+            country,
+            language,
+            search_count
+        FROM tblUsers
+        ORDER BY search_count DESC
+        """
+        return self.cursor.execute(sql).fetchall()
+    
+    def get_least_popular_users(self):
+        sql = """
+        SELECT 
+            id,
+            first_name,
+            last_name,
+            sex,
+            birth_date,
+            rating,
+            primary_skills,
+            secondary_skill,
+            company,
+            active,
+            country,
+            language,
+            search_count
+        FROM tblUsers
+        ORDER BY search_count ASC
+        """
+        return self.cursor.execute(sql).fetchall()
+    

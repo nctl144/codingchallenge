@@ -39,9 +39,10 @@ def searchUser():
 
 @app.route('/users/most_popular', methods=['GET'])
 def getMostPopular():
-    pass
-
+    service = UserService()
+    return service.get_most_popular_users()
 
 @app.route('/users/least_popular', methods=['GET'])
 def getLeastPopular():
-    pass
+    service = UserService()
+    return service.get_least_popular_users()

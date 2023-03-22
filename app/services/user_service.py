@@ -24,3 +24,10 @@ class UserService:
         for filter in filters:
             if filter not in User.FILTER_ATTRS:
                 raise Exception("filter is not valid")
+
+    def get_most_popular_users(self):
+        return self.user_dao.get_most_popular_users()
+    
+    def get_least_popular_users(self):
+        return self.user_dao.get_least_popular_users()
+    
